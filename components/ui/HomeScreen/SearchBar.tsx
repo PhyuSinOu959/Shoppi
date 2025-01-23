@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { IconSymbol } from './IconSymbol';
+import { IconSymbol } from '../IconSymbol';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 export function SearchBar() {
@@ -18,7 +18,7 @@ export function SearchBar() {
         />
       </View>
       <TouchableOpacity style={styles.filterButton}>
-        <IconSymbol name="chevron.right" size={20} color={iconColor} />
+        <IconSymbol name="line.3.horizontal.decrease" size={20} color={iconColor} />
       </TouchableOpacity>
     </View>
   );

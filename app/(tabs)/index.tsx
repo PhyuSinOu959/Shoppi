@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { SearchBar } from '@/components/ui/SearchBar';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { DataList } from '@/components/ui/HomeScreen/DataList';
 
 export default function HomeScreen() {
   return (
@@ -12,7 +11,7 @@ export default function HomeScreen() {
         <ThemedView style={styles.header}>
           <ThemedText type="title">ClickMart</ThemedText>
         </ThemedView>
-        <SearchBar />
+        <DataList />
       </ThemedView>
     </SafeAreaView>
   );
