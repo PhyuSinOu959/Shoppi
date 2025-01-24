@@ -3,6 +3,7 @@ export const endpoints = {
         getListCategory: '/api/v1/Category/GetListCategory',
         getListCategoryWithProduct: '/api/v1/Category/GetListCategoryWithProduct',
         getListCateWithProduct_CateFilter: '/api/v1/Category/GetListCategoryWithProductAndCategoryFilter',
+        getListProduct: 'dummyjson.com/products'
     },
     product: {
         getPagedListProduct: '/api/v1/Product/GetPagedListProduct',

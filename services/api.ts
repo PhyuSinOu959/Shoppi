@@ -7,7 +7,8 @@ import { ProductMeasurement } from './types/productMeasurement';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'https://api.xwinpos.store' 
+    // baseUrl: 'https://api.xwinpos.store' 
+    baseUrl: 'https://' 
   }),
   endpoints: (builder) => ({
     // Category endpoints
@@ -36,6 +37,9 @@ export const api = createApi({
     getProductMeasurement: builder.query<ProductMeasurement, string>({
       query: (id) => `${endpoints.productMeasure.getListProdMeasureById}/${id}`,
     }),
+    getProductList: builder.query({
+      query: () => endpoints.category.getListProduct,
+    }),
   }),
 });
 
@@ -48,4 +52,5 @@ export const {
   useGetProductQuery,
   useGetProductMeasurementsQuery,
   useGetProductMeasurementQuery,
+  useGetProductListQuery,
 } = api;
