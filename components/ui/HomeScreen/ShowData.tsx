@@ -11,6 +11,8 @@ import {
   FlatList,
 } from 'react-native'
 import { SearchBar } from './SearchBar'
+import { useDispatch } from 'react-redux'
+import { router } from 'expo-router'
 
 type Product = {
   id: string
@@ -26,15 +28,25 @@ type Product = {
 export const ShowData = () => {
   const { data, isLoading, error } = useGetProductListQuery(undefined)
   const products = data?.products || []
+  const dispatch = useDispatch();
+
+  const handleProductDetail = (id: string) => {
+    router.push({
+      pathname: "/product/[id]",
+      params: { id }
+    });
+  }
 
   const renderProduct = ({ item }: { item: Product }) => (
-    <Pressable style={styles.productCard}>
+    <Pressable style={styles.productCard} onPress={() => {
+      handleProductDetail(item.id)
+    }}>
       <View style={styles.imageContainer}>
-        <Image 
+        {/* <Image 
           source={{ uri: item.imageUrl }} 
           style={styles.productImage}
           defaultSource={require('@/assets/placeholder.png')}
-        />
+        /> */}
         <Pressable style={styles.favoriteButton}>
           <Text>♡</Text>
         </Pressable>
