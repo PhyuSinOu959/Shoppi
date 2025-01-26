@@ -16,7 +16,7 @@ export default function DetailScreen() {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.imageContainer}>
+            {/* <View style={styles.imageContainer}>
                 {product.imageUrl && (
                     <Image 
                         source={{ uri: product.imageUrl }} 
@@ -24,7 +24,7 @@ export default function DetailScreen() {
                         defaultSource={require('@/assets/placeholder.png')}
                     />
                 )}
-            </View>
+            </View> */}
             <View style={styles.infoContainer}>
                 <Text style={styles.name}>{product.name}</Text>
                 <View style={styles.priceContainer}>
