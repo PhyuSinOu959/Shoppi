@@ -4,15 +4,16 @@ import {
   View,
   Text,
   ActivityIndicator,
-  ScrollView,
   StyleSheet,
   Image,
   Pressable,
   FlatList,
+  SectionList,
 } from 'react-native'
 import { SearchBar } from './SearchBar'
 import { useDispatch } from 'react-redux'
 import { router } from 'expo-router'
+import { CategoryBar } from './CategoryBar'
 
 type Product = {
   id: string
@@ -25,16 +26,40 @@ type Product = {
   soldCount?: number
 }
 
+type Section = {
+  title: string
+  subtitle?: string
+  data: Product[][]
+}
+
 export const ShowData = () => {
   const { data, isLoading, error } = useGetProductListQuery(undefined)
   const products = data?.products || []
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+
+  const sections: Section[] = [
+    {
+      title: 'Most Popular',
+      subtitle: 'Top picks for you',
+      data: [products.slice(0, 6)],
+    },
+    {
+      title: 'New Arrivals',
+      subtitle: 'Fresh finds for your needs',
+      data: [products.slice(6, 12)],
+    },
+    {
+      title: 'Best Deals',
+      subtitle: 'Great savings on great items',
+      data: [products.slice(12, 18)],
+    },
+  ]
 
   const handleProductDetail = (id: string) => {
     router.push({
       pathname: "/product/[id]",
       params: { id }
-    });
+    })
   }
 
   const renderProduct = ({ item }: { item: Product }) => (
@@ -67,9 +92,36 @@ export const ShowData = () => {
     </Pressable>
   )
 
+  const renderSectionHeader = ({ section }: { section: Section }) => (
+    <View style={styles.sectionHeader}>
+      <View>
+        <Text style={styles.sectionTitle}>{section.title}</Text>
+        {section.subtitle && (
+          <Text style={styles.sectionSubtitle}>{section.subtitle}</Text>
+        )}
+      </View>
+      <Pressable>
+        <Text style={styles.viewAll}>View All</Text>
+      </Pressable>
+    </View>
+  )
+
+  const renderSectionContent = ({ item }: { item: Product[] }) => (
+    <FlatList
+      data={item}
+      renderItem={renderProduct}
+      keyExtractor={(item) => item.id}
+      horizontal={false}
+      numColumns={2}
+      scrollEnabled={false}
+      columnWrapperStyle={styles.productRow}
+    />
+  )
+
   return (
     <View style={styles.container}>
       <SearchBar />
+      <CategoryBar />
       
       {isLoading && (
         <View style={styles.centered}>
@@ -83,24 +135,13 @@ export const ShowData = () => {
         </View>
       )}
 
-      <View style={styles.headerContainer}>
-        <Text style={styles.sectionTitle}>Most Popular</Text>
-        <Pressable>
-          <Text style={styles.viewAll}>View All</Text>
-        </Pressable>
-      </View>
-
-      <FlatList
-        data={products}
-        renderItem={renderProduct}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.productRow}
-        contentContainerStyle={styles.productList}
+      <SectionList
+        sections={sections}
+        renderSectionHeader={renderSectionHeader}
+        renderItem={renderSectionContent}
+        stickySectionHeadersEnabled={false}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={() => (
-          <Text style={styles.noProducts}>No products available</Text>
-        )}
+        contentContainerStyle={styles.sectionList}
       />
     </View>
   )
@@ -116,7 +157,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  headerContainer: {
+  sectionList: {
+    paddingBottom: 16,
+  },
+  sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -124,19 +168,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
+    color: '#000',
+  },
+  sectionSubtitle: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 2,
   },
   viewAll: {
     color: '#666',
     fontSize: 14,
   },
-  productList: {
-    padding: 8,
-  },
   productRow: {
     justifyContent: 'space-between',
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
   },
   productCard: {
     width: '48%',
@@ -155,6 +202,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     overflow: 'hidden',
+    backgroundColor: '#f5f5f5',
   },
   productImage: {
     width: '100%',
@@ -212,10 +260,5 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-  },
-  noProducts: {
-    textAlign: 'center',
-    marginTop: 20,
-    color: '#666',
   },
 })
