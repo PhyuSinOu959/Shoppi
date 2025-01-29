@@ -14,6 +14,17 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'line.3.horizontal.decrease': 'filter-list',
+  'person.fill': 'person',
+  'bag.fill': 'shopping-bag',
+  'heart.fill': 'favorite',
+  'location.fill': 'location-on',
+  'creditcard.fill': 'credit-card',
+  'bell.fill': 'notifications',
+  'gear': 'settings',
+  'questionmark.circle.fill': 'help',
+  'pencil': 'edit',
+  'arrow.right.square': 'logout',
+  'cart.fill': 'shopping-cart'
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
