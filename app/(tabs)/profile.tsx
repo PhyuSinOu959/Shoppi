@@ -189,17 +189,23 @@ const styles = StyleSheet.create({
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginBottom: 40,
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: '#FFF5F5',
+    padding: 20,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
   logoutText: {
     marginLeft: 8,
     fontSize: 16,
     fontWeight: '600',
     color: '#E63946',
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  mt20: {
+    marginTop: 20,
   },
 }); 
