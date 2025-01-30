@@ -2,21 +2,31 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useGetCategoriesQuery } from '@/services/api';
 import { Category } from '@/services/types';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const { width } = Dimensions.get('window');
 const COLUMN_NUM = 4;
 const SPACING = 8;
 const ITEM_WIDTH = (width - (SPACING * (COLUMN_NUM + 1))) / COLUMN_NUM;
 
+type RootStackParamList = {
+    Home: undefined;
+    ProductDetail: { id: string };
+};
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function CategoryScreen() {
+    const navigation = useNavigation<NavigationProp>();
     const { data: categories, isLoading } = useGetCategoriesQuery();
 
     const renderItem = ({ item }: { item: Category }) => (
-        <TouchableOpacity style={styles.categoryItem}>
+        <TouchableOpacity style={styles.categoryItem} onPress={() => navigation.navigate('Home')}>
             <View style={styles.imageContainer}>
                 {item.imageUrl ? (
-                    <Image 
-                        source={{ uri: item.imageUrl }} 
+                    <Image
+                        source={{ uri: item.imageUrl }}
                         style={styles.image}
                         resizeMode="cover"
                     />
