@@ -32,7 +32,7 @@ type Section = {
   data: Product[][]
 }
 
-export const ShowData = () => {
+export const CategoryList = () => {
   const { data, isLoading, error } = useGetProductListQuery(undefined)
   const products = data?.products || []
   const dispatch = useDispatch()
