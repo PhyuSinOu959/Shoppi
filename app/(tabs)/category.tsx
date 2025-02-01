@@ -13,6 +13,7 @@ const ITEM_WIDTH = (width - (SPACING * (COLUMN_NUM + 1))) / COLUMN_NUM;
 type RootStackParamList = {
     Home: undefined;
     ProductDetail: { id: string };
+    Category: { categoryId: string };
 };
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -22,7 +23,10 @@ export default function CategoryScreen() {
     const { data: categories, isLoading } = useGetCategoriesQuery();
 
     const renderItem = ({ item }: { item: Category }) => (
-        <TouchableOpacity style={styles.categoryItem} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity 
+            style={styles.categoryItem} 
+            onPress={() => navigation.navigate('Category', { categoryId: item.id })}
+        >
             <View style={styles.imageContainer}>
                 {item.imageUrl ? (
                     <Image

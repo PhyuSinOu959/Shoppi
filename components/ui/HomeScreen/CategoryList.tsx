@@ -36,6 +36,7 @@ export const CategoryList = () => {
   const { data, isLoading, error } = useGetProductListQuery(undefined)
   const products = data?.products || []
   const dispatch = useDispatch()
+  console.log('ouu', data)
 
   const sections: Section[] = [
     {
