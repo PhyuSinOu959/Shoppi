@@ -1,5 +1,5 @@
 import { useGetProductListQuery } from '@/services/api'
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { SearchBar } from './SearchBar'
 import { useDispatch } from 'react-redux'
 import { router } from 'expo-router'
 import { CategoryBar } from './CategoryBar'
+import { SortBar, SortOption } from './SortBar'
 
 type Product = {
   id: string
@@ -34,27 +35,48 @@ type Section = {
 
 export const CategoryList = () => {
   const { data, isLoading, error } = useGetProductListQuery(undefined)
-  const products = data?.products || []
+  const [currentSort, setCurrentSort] = useState<SortOption>('default')
   const dispatch = useDispatch()
-  console.log('ouu', data)
 
-  const sections: Section[] = [
+  const sortProducts = (products: Product[]) => {
+    if (!products) return [];
+    
+    const sorted = [...products];
+    switch (currentSort) {
+      case 'price-asc':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      case 'popularity':
+        return sorted.sort((a, b) => (b.soldCount || 0) - (a.soldCount || 0));
+      default:
+        return sorted;
+    }
+  };
+
+  const sortedProducts = useMemo(() => {
+    return sortProducts(data?.products || []);
+  }, [data?.products, currentSort]);
+
+  const sections: Section[] = useMemo(() => [
     {
       title: 'Most Popular',
       subtitle: 'Top picks for you',
-      data: [products.slice(0, 6)],
+      data: [sortedProducts.slice(0, 6)],
     },
     {
       title: 'New Arrivals',
       subtitle: 'Fresh finds for your needs',
-      data: [products.slice(6, 12)],
+      data: [sortedProducts.slice(6, 12)],
     },
     {
       title: 'Best Deals',
       subtitle: 'Great savings on great items',
-      data: [products.slice(12, 18)],
+      data: [sortedProducts.slice(12, 18)],
     },
-  ]
+  ], [sortedProducts]);
 
   const handleProductDetail = (id: string) => {
     router.push({
@@ -123,6 +145,7 @@ export const CategoryList = () => {
     <View style={styles.container}>
       <SearchBar />
       <CategoryBar />
+      <SortBar currentSort={currentSort} onSortChange={setCurrentSort} />
       
       {isLoading && (
         <View style={styles.centered}>
