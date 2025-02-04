@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 import { BottomSheetModal, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { SortBar, SortOption } from './SortBar';
@@ -8,7 +8,7 @@ export const FunctionBar = () => {
     const filterBottomSheetRef = useRef<BottomSheetModal>(null);
     
     // variables
-    const snapPoints = useMemo(() => ['50%'], []); // Simplify to one snap point for testing
+    const snapPoints = useMemo(() => ['25%', '50%'], []); // Add multiple snap points
 
     useEffect(() => {
         return () => {
@@ -19,21 +19,11 @@ export const FunctionBar = () => {
 
     // callbacks
     const handleSortPress = useCallback(() => {
-        console.log('Sort button pressed');
-        if (sortBottomSheetRef.current) {
-            sortBottomSheetRef.current.present();
-        } else {
-            console.log('sortBottomSheetRef is null');
-        }
+        sortBottomSheetRef.current?.present();
     }, []);
 
     const handleFilterPress = useCallback(() => {
-        console.log('Filter button pressed');
-        if (filterBottomSheetRef.current) {
-            filterBottomSheetRef.current.present();
-        } else {
-            console.log('filterBottomSheetRef is null');
-        }
+        filterBottomSheetRef.current?.present();
     }, []);
 
     const handleSortChange = (option: SortOption) => {
@@ -41,12 +31,17 @@ export const FunctionBar = () => {
         sortBottomSheetRef.current?.dismiss();
     };
 
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
+
     const renderBackdrop = useCallback(
         (props: any) => (
             <BottomSheetBackdrop
                 {...props}
                 appearsOnIndex={0}
                 disappearsOnIndex={-1}
+                pressBehavior="close"
             />
         ),
         []
@@ -54,30 +49,28 @@ export const FunctionBar = () => {
 
     return (
         <View style={styles.container}>
-            <Pressable 
+            <TouchableOpacity 
                 style={styles.functionContainer} 
                 onPress={handleSortPress}
             >
                 <Text style={styles.buttonText}>Sort</Text>
-            </Pressable>
-            <Pressable 
+            </TouchableOpacity>
+            <TouchableOpacity 
                 style={styles.functionContainer} 
                 onPress={handleFilterPress}
             >
                 <Text style={styles.buttonText}>Filter</Text>
-            </Pressable>
+            </TouchableOpacity>
 
             <BottomSheetModal
                 ref={sortBottomSheetRef}
                 index={0}
                 snapPoints={snapPoints}
+                onChange={handleSheetChanges}
                 enablePanDownToClose
-                enableDismissOnClose
                 backdropComponent={renderBackdrop}
                 backgroundStyle={styles.bottomSheetBackground}
                 handleIndicatorStyle={styles.bottomSheetIndicator}
-                onChange={(index) => console.log('Sort sheet index changed:', index)}
-                onDismiss={() => console.log('Sort sheet dismissed')}
             >
                 <View style={styles.bottomSheetContent}>
                     <SortBar currentSort="default" onSortChange={handleSortChange} />
@@ -88,13 +81,11 @@ export const FunctionBar = () => {
                 ref={filterBottomSheetRef}
                 index={0}
                 snapPoints={snapPoints}
+                onChange={handleSheetChanges}
                 enablePanDownToClose
-                enableDismissOnClose
                 backdropComponent={renderBackdrop}
                 backgroundStyle={styles.bottomSheetBackground}
                 handleIndicatorStyle={styles.bottomSheetIndicator}
-                onChange={(index) => console.log('Filter sheet index changed:', index)}
-                onDismiss={() => console.log('Filter sheet dismissed')}
             >
                 <View style={styles.bottomSheetContent}>
                     <Text>Filter options will go here</Text>

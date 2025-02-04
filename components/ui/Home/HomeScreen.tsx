@@ -16,6 +16,7 @@ import { router } from 'expo-router'
 import { CategoryBar } from './CategoryBar'
 import { SortBar, SortOption } from './SortBar'
 import { FunctionBar } from './FunctionBar'
+import { CategoryList } from './CategoryList'
 
 type Product = {
   id: string
@@ -34,7 +35,7 @@ type Section = {
   data: Product[][]
 }
 
-export const CategoryList = () => {
+export const HomeScreen = () => {
   const { data, isLoading, error } = useGetProductListQuery(undefined)
   const [currentSort, setCurrentSort] = useState<SortOption>('default')
   const dispatch = useDispatch()
@@ -146,8 +147,9 @@ export const CategoryList = () => {
     <View style={styles.container}>
       <SearchBar />
       <FunctionBar />
-      <CategoryBar />
+      {/* <CategoryBar /> */}
       {/* <SortBar currentSort={currentSort} onSortChange={setCurrentSort} /> */}
+      <CategoryList />
       
       {isLoading && (
         <View style={styles.centered}>
@@ -161,14 +163,15 @@ export const CategoryList = () => {
         </View>
       )}
 
-      <SectionList
+      {/* <SectionList
         sections={sections}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderSectionContent}
         stickySectionHeadersEnabled={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.sectionList}
-      />
+      /> */}
+
     </View>
   )
 }
