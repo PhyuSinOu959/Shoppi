@@ -37,7 +37,7 @@ const categories = [
 
 export function CategoryBar() {
     const [selectedCategory, setSelectedCategory] = useState('electronics');
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
     const backgroundColor = useThemeColor({}, 'background');
     const textColor = useThemeColor({}, 'text');
 

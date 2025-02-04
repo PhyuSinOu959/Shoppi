@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux'
 import { router } from 'expo-router'
 import { CategoryBar } from './CategoryBar'
 import { SortBar, SortOption } from './SortBar'
+import { FunctionBar } from './FunctionBar'
 
 type Product = {
   id: string
@@ -144,8 +145,9 @@ export const CategoryList = () => {
   return (
     <View style={styles.container}>
       <SearchBar />
+      <FunctionBar />
       <CategoryBar />
-      <SortBar currentSort={currentSort} onSortChange={setCurrentSort} />
+      {/* <SortBar currentSort={currentSort} onSortChange={setCurrentSort} /> */}
       
       {isLoading && (
         <View style={styles.centered}>

@@ -21,6 +21,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function CategoryScreen() {
     const navigation = useNavigation<NavigationProp>();
     const { data: categories, isLoading } = useGetCategoriesQuery();
+    console.log(categories);
 
     const renderItem = ({ item }: { item: Category }) => (
         <TouchableOpacity 
