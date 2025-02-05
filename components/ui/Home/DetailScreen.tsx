@@ -4,12 +4,14 @@ import { useGetProductQuery } from "@/services/api";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/Reducer/cartSlice";
 import { useState } from "react";
+import { Picker } from '@react-native-picker/picker';
 
 export default function DetailScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { data: product, isLoading } = useGetProductQuery(id);
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
+    const [unitType, setUnitType] = useState('liter');
 
     const handleAddToCart = () => {
         if (product) {
@@ -75,6 +77,18 @@ export default function DetailScreen() {
                     >
                         <Text style={styles.quantityButtonText}>+</Text>
                     </TouchableOpacity>
+                </View>
+
+                <View style={styles.unitTypeContainer}>
+                    <Text style={styles.unitTypeLabel}>Unit Type:</Text>
+                    <Picker
+                        selectedValue={unitType}
+                        style={styles.unitTypePicker}
+                        onValueChange={(itemValue: string) => setUnitType(itemValue)}
+                    >
+                        <Picker.Item label="Liter" value="liter" />
+                        <Picker.Item label="Gram" value="gram" />
+                    </Picker>
                 </View>
 
                 <TouchableOpacity 
@@ -186,5 +200,21 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: '600',
+    },
+    unitTypeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 16,
+        marginTop: 8,
+    },
+    unitTypeLabel: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#333',
+    },
+    unitTypePicker: {
+        height: 50,
+        width: 150,
     },
 });
