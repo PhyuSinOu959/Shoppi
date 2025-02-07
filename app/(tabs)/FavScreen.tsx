@@ -22,6 +22,7 @@ type FavoriteProduct = {
 export default function FavScreen() {
     const navigation = useNavigation<NavigationProp>();
     const favorites = useSelector((state: { favorites: FavoriteProduct[] }) => state.favorites) || [];
+    console.log(favorites);
 
     const renderItem = ({ item }: { item: FavoriteProduct }) => (
         <TouchableOpacity
@@ -38,6 +39,8 @@ export default function FavScreen() {
             </View>
         </TouchableOpacity>
     );
+
+    const ItemSeparator = () => <View style={styles.separator} />;
 
     if (favorites.length === 0) {
         return (
@@ -61,6 +64,7 @@ export default function FavScreen() {
                 keyExtractor={(item) => item.id}
                 numColumns={2}
                 contentContainerStyle={styles.listContainer}
+                ItemSeparatorComponent={ItemSeparator}
             />
         </View>
     );
@@ -133,5 +137,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: '600',
+    },
+    separator: {
+        height: 16,
     },
 });
