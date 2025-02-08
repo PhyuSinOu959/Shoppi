@@ -1,44 +1,64 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useGetCategoriesWithProductsQuery } from '@/services/api';
 import { Product } from '@/services/types/product';
 import { Category } from '@/services/types/category';
+import { useState } from 'react';
+
+type QuantityType = 'pack' | 'box' | 'unit' | 'dozen';
 
 export default function CategoryDetailPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: categories, isLoading } = useGetCategoriesWithProductsQuery();
   const currentCategory = categories?.find(cat => cat.id === id);
 
-  const renderItem = ({ item }: { item: Product }) => (
-    <TouchableOpacity style={styles.productItem}>
-      {item.imageUrl && (
-        <ThemedView style={styles.imageContainer}>
-          {/* Add Image component here if needed */}
-        </ThemedView>
-      )}
-      <ThemedView style={styles.productInfo}>
-        <ThemedText style={styles.productName}>{item.name}</ThemedText>
-        <ThemedView style={styles.priceContainer}>
-          <ThemedText style={styles.productPrice}>${item.price}</ThemedText>
-          {item.originalPrice && (
-            <ThemedText style={styles.originalPrice}>${item.originalPrice}</ThemedText>
-          )}
-        </ThemedView>
-        {(item.rating || item.soldCount) && (
-          <ThemedView style={styles.statsContainer}>
-            {item.rating && (
-              <ThemedText style={styles.rating}>★ {item.rating}</ThemedText>
-            )}
-            {item.soldCount && (
-              <ThemedText style={styles.soldCount}>• {item.soldCount} sold</ThemedText>
-            )}
+  const renderItem = ({ item }: { item: Product }) => {
+    const [selectedQuantityType, setSelectedQuantityType] = useState<QuantityType>('pack');
+    
+    return (
+      <TouchableOpacity style={styles.productItem}>
+        {item.imageUrl && (
+          <ThemedView style={styles.imageContainer}>
+            {/* Add Image component here if needed */}
           </ThemedView>
         )}
-      </ThemedView>
-    </TouchableOpacity>
-  );
+        <ThemedView style={styles.productInfo}>
+          <ThemedText style={styles.productName}>{item.name}</ThemedText>
+          <ThemedView style={styles.priceContainer}>
+            <ThemedText style={styles.productPrice}>${item.price}</ThemedText>
+            {item.originalPrice && (
+              <ThemedText style={styles.originalPrice}>${item.originalPrice}</ThemedText>
+            )}
+          </ThemedView>
+          <ThemedView style={styles.pickerContainer}>
+            <Picker<QuantityType>
+              selectedValue={selectedQuantityType}
+              onValueChange={(itemValue: QuantityType) => setSelectedQuantityType(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Pack" value="pack" />
+              <Picker.Item label="Box" value="box" />
+              <Picker.Item label="Unit" value="unit" />
+              <Picker.Item label="Dozen" value="dozen" />
+            </Picker>
+          </ThemedView>
+          {(item.rating || item.soldCount) && (
+            <ThemedView style={styles.statsContainer}>
+              {item.rating && (
+                <ThemedText style={styles.rating}>★ {item.rating}</ThemedText>
+              )}
+              {item.soldCount && (
+                <ThemedText style={styles.soldCount}>• {item.soldCount} sold</ThemedText>
+              )}
+            </ThemedView>
+          )}
+        </ThemedView>
+      </TouchableOpacity>
+    );
+  };
 
   if (isLoading) {
     return (
@@ -143,5 +163,12 @@ const styles = StyleSheet.create({
   soldCount: {
     fontSize: 14,
     color: '#666',
+  },
+  pickerContainer: {
+    marginVertical: 4,
+  },
+  picker: {
+    height: 40,
+    width: 150,
   },
 }); 
