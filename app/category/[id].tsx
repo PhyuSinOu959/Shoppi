@@ -17,6 +17,7 @@ export default function CategoryDetailPage() {
 
   const renderItem = ({ item }: { item: Product }) => {
     const [selectedQuantityType, setSelectedQuantityType] = useState<QuantityType>('pack');
+    const [quantity, setQuantity] = useState(1);
     
     return (
       <TouchableOpacity style={styles.productItem}>
@@ -33,7 +34,22 @@ export default function CategoryDetailPage() {
               <ThemedText style={styles.originalPrice}>${item.originalPrice}</ThemedText>
             )}
           </ThemedView>
-          <ThemedView style={styles.pickerContainer}>
+          <ThemedView style={styles.quantityContainer}>
+            <ThemedView style={styles.quantitySelector}>
+              <TouchableOpacity 
+                onPress={() => quantity > 1 && setQuantity(quantity - 1)}
+                style={styles.quantityButton}
+              >
+                <ThemedText style={styles.quantityButtonText}>-</ThemedText>
+              </TouchableOpacity>
+              <ThemedText style={styles.quantityText}>{quantity}</ThemedText>
+              <TouchableOpacity 
+                onPress={() => setQuantity(quantity + 1)}
+                style={styles.quantityButton}
+              >
+                <ThemedText style={styles.quantityButtonText}>+</ThemedText>
+              </TouchableOpacity>
+            </ThemedView>
             <Picker<QuantityType>
               selectedValue={selectedQuantityType}
               onValueChange={(itemValue: QuantityType) => setSelectedQuantityType(itemValue)}
@@ -164,11 +180,36 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-  pickerContainer: {
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginVertical: 4,
+  },
+  quantitySelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 4,
+    paddingHorizontal: 4,
+  },
+  quantityButton: {
+    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quantityButtonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#007AFF',
+  },
+  quantityText: {
+    paddingHorizontal: 12,
+    fontSize: 16,
   },
   picker: {
     height: 40,
-    width: 150,
+    width: 120,
   },
 }); 
