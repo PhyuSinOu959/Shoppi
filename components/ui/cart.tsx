@@ -2,10 +2,32 @@ import { StyleSheet, FlatList, Image, TouchableOpacity, View } from 'react-nativ
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store';
 import { removeFromCart, updateQuantity } from '@/store/Reducer/cartSlice';
 import { Ionicons } from '@expo/vector-icons';
 import { useCallback, useMemo } from 'react';
+
+interface CartItem {
+  id: string;
+  quantity: number;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl?: string;
+}
+
+interface RootState {
+  cart: {
+    items: CartItem[];
+  };
+  products: {
+    products: Product[];
+  };
+}
+
+interface CartItemWithDetails extends CartItem, Product {}
 
 export default function CartScreen() {
   const dispatch = useDispatch();
@@ -13,17 +35,17 @@ export default function CartScreen() {
   const products = useSelector((state: RootState) => state.products.products);
 
   const cartItemsWithDetails = useMemo(() => {
-    return cartItems.map(item => {
-      const product = products.find(p => p.id === item.id);
+    return cartItems.map((item: CartItem) => {
+      const product = products.find((p: Product) => p.id === item.id);
       return {
         ...item,
         ...product,
-      };
+      } as CartItemWithDetails;
     });
   }, [cartItems, products]);
 
   const totalPrice = useMemo(() => {
-    return cartItemsWithDetails.reduce((sum, item) => {
+    return cartItemsWithDetails.reduce((sum: number, item: CartItemWithDetails) => {
       return sum + (item.price * item.quantity);
     }, 0);
   }, [cartItemsWithDetails]);
@@ -40,25 +62,25 @@ export default function CartScreen() {
     }
   }, [dispatch]);
 
-  const renderItem = ({ item }: { item: any }) => (
+  const renderItem = ({ item }: { item: CartItemWithDetails }) => (
     <ThemedView style={styles.cartItem}>
       <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
       <View style={styles.itemDetails}>
         <ThemedText type="subtitle">{item.name}</ThemedText>
-        <ThemedText type="body">${item.price}</ThemedText>
+        <ThemedText type="default">${item.price}</ThemedText>
         <View style={styles.quantityControl}>
           <TouchableOpacity 
             onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}
             style={styles.quantityButton}
           >
-            <ThemedText>-</ThemedText>
+            <ThemedText type="default">-</ThemedText>
           </TouchableOpacity>
-          <ThemedText style={styles.quantity}>{item.quantity}</ThemedText>
+          <ThemedText type="default" style={styles.quantity}>{item.quantity}</ThemedText>
           <TouchableOpacity 
             onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}
             style={styles.quantityButton}
           >
-            <ThemedText>+</ThemedText>
+            <ThemedText type="default">+</ThemedText>
           </TouchableOpacity>
         </View>
       </View>
