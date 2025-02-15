@@ -4,121 +4,107 @@ import { ThemedView } from '@/components/ThemedView';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, updateQuantity } from '@/store/Reducer/cartSlice';
 import { Ionicons } from '@expo/vector-icons';
-import { useCallback, useMemo } from 'react';
+import { useGetProductQuery } from '@/services/api';
+import { useMemo } from 'react';
 
 interface CartItem {
   id: string;
   quantity: number;
 }
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl?: string;
-}
-
-interface RootState {
-  cart: {
-    items: CartItem[];
-  };
-  products: {
-    products: Product[];
-  };
-}
-
-interface CartItemWithDetails extends CartItem, Product {}
-
-export default function CartScreen() {
+const CartItemComponent = ({ item }: { item: CartItem }) => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const products = useSelector((state: RootState) => state.products.products);
+  const { data: product } = useGetProductQuery(item.id);
 
-  const cartItemsWithDetails = useMemo(() => {
-    return cartItems.map((item: CartItem) => {
-      const product = products.find((p: Product) => p.id === item.id);
-      return {
-        ...item,
-        ...product,
-      } as CartItemWithDetails;
-    });
-  }, [cartItems, products]);
-
-  const totalPrice = useMemo(() => {
-    return cartItemsWithDetails.reduce((sum: number, item: CartItemWithDetails) => {
-      return sum + (item.price * item.quantity);
-    }, 0);
-  }, [cartItemsWithDetails]);
-
-  const handleRemoveItem = useCallback((id: string) => {
-    dispatch(removeFromCart(id));
-  }, [dispatch]);
-
-  const handleUpdateQuantity = useCallback((id: string, quantity: number) => {
-    if (quantity < 1) {
-      dispatch(removeFromCart(id));
+  const handleQuantityChange = (change: number) => {
+    const newQuantity = item.quantity + change;
+    if (newQuantity >= 1) {
+      dispatch(updateQuantity({ id: item.id, quantity: newQuantity }));
     } else {
-      dispatch(updateQuantity({ id, quantity }));
+      dispatch(removeFromCart(item.id));
     }
-  }, [dispatch]);
+  };
 
-  const renderItem = ({ item }: { item: CartItemWithDetails }) => (
+  const handleRemove = () => {
+    dispatch(removeFromCart(item.id));
+  };
+
+  if (!product) return null;
+
+  return (
     <ThemedView style={styles.cartItem}>
-      <Image source={{ uri: item.imageUrl }} style={styles.itemImage} />
+      <View style={styles.imageContainer}>
+        {product.imageUrl && (
+          <Image 
+            source={{ uri: product.imageUrl }} 
+            style={styles.productImage}
+            defaultSource={require('@/assets/placeholder.png')}
+          />
+        )}
+      </View>
+      
       <View style={styles.itemDetails}>
-        <ThemedText type="subtitle">{item.name}</ThemedText>
-        <ThemedText type="default">${item.price}</ThemedText>
-        <View style={styles.quantityControl}>
+        <ThemedText style={styles.productName}>{product.name}</ThemedText>
+        <ThemedText style={styles.price}>${product.price}</ThemedText>
+        
+        <View style={styles.quantityContainer}>
           <TouchableOpacity 
-            onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-            style={styles.quantityButton}
+            style={styles.quantityButton} 
+            onPress={() => handleQuantityChange(-1)}
           >
-            <ThemedText type="default">-</ThemedText>
+            <ThemedText style={styles.quantityButtonText}>-</ThemedText>
           </TouchableOpacity>
-          <ThemedText type="default" style={styles.quantity}>{item.quantity}</ThemedText>
+          
+          <ThemedText style={styles.quantity}>{item.quantity}</ThemedText>
+          
           <TouchableOpacity 
-            onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-            style={styles.quantityButton}
+            style={styles.quantityButton} 
+            onPress={() => handleQuantityChange(1)}
           >
-            <ThemedText type="default">+</ThemedText>
+            <ThemedText style={styles.quantityButtonText}>+</ThemedText>
           </TouchableOpacity>
         </View>
       </View>
+
       <TouchableOpacity 
-        onPress={() => handleRemoveItem(item.id)}
         style={styles.removeButton}
+        onPress={handleRemove}
       >
-        <Ionicons name="trash-outline" size={24} color="red" />
+        <Ionicons name="trash-outline" size={24} color="#FF3B30" />
       </TouchableOpacity>
     </ThemedView>
   );
+};
+
+export default function CartScreen() {
+  const cartItems = useSelector((state: { cart: { items: CartItem[] } }) => state.cart.items);
+
+  const totalItems = useMemo(() => {
+    return cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  }, [cartItems]);
 
   if (cartItems.length === 0) {
     return (
       <ThemedView style={styles.emptyContainer}>
-        <Ionicons name="cart-outline" size={64} color="gray" />
-        <ThemedText type="title" style={styles.emptyText}>Your cart is empty</ThemedText>
+        <Ionicons name="cart-outline" size={64} color="#999" />
+        <ThemedText style={styles.emptyText}>Your cart is empty</ThemedText>
       </ThemedView>
     );
   }
 
   return (
     <ThemedView style={styles.container}>
+      <ThemedText style={styles.itemCount}>
+        {totalItems} {totalItems === 1 ? 'item' : 'items'}
+      </ThemedText>
+      
       <FlatList
-        data={cartItemsWithDetails}
-        renderItem={renderItem}
+        data={cartItems}
+        renderItem={({ item }) => <CartItemComponent item={item} />}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
       />
-      <ThemedView style={styles.footer}>
-        <View style={styles.totalContainer}>
-          <ThemedText type="subtitle">Total:</ThemedText>
-          <ThemedText type="title">${totalPrice.toFixed(2)}</ThemedText>
-        </View>
-        <TouchableOpacity style={styles.checkoutButton}>
-          <ThemedText style={styles.checkoutButtonText}>Checkout</ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
     </ThemedView>
   );
 }
@@ -126,26 +112,23 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  emptyText: {
-    marginTop: 16,
-    color: 'gray',
+    backgroundColor: '#f5f5f5',
   },
   listContainer: {
     padding: 16,
+    gap: 12,
+  },
+  itemCount: {
+    fontSize: 16,
+    color: '#666',
+    padding: 16,
+    paddingBottom: 8,
   },
   cartItem: {
     flexDirection: 'row',
-    padding: 12,
-    marginBottom: 12,
-    borderRadius: 8,
     backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 12,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -155,54 +138,69 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  itemImage: {
+  imageContainer: {
     width: 80,
     height: 80,
     borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#f0f0f0',
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   itemDetails: {
     flex: 1,
     marginLeft: 12,
     justifyContent: 'space-between',
   },
-  quantityControl: {
+  productName: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#007AFF',
+  },
+  quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
+    marginTop: 8,
   },
   quantityButton: {
-    width: 30,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     backgroundColor: '#f0f0f0',
-    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quantityButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
   },
   quantity: {
-    marginHorizontal: 12,
+    fontSize: 16,
+    fontWeight: '500',
+    minWidth: 24,
+    textAlign: 'center',
   },
   removeButton: {
     padding: 8,
+    justifyContent: 'center',
   },
-  footer: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-  },
-  totalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
+    gap: 16,
   },
-  checkoutButton: {
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  checkoutButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+  emptyText: {
+    fontSize: 18,
+    color: '#999',
   },
 }); 
