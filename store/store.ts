@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import cartReducer from './Reducer/cartSlice';
 import productReducer from './Reducer/productSlice';
+import authReducer from './Reducer/authSlice';
 import { rootSaga } from './saga';
 import { api } from '../services/api';
 
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     cart: cartReducer,
     products: productReducer,
+    auth: authReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
