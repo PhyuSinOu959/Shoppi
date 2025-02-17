@@ -1,56 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { endpoints } from './endpoints';
-import { Category } from './types/category';
-import { Product } from './types/product';
-import { ProductMeasurement } from './types/productMeasurement';
-
-export const api = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ 
-    // baseUrl: 'https://api.xwinpos.store' 
-    baseUrl: 'https://' 
-  }),
-  endpoints: (builder) => ({
-    // Category endpoints
-    getCategories: builder.query<Category[], void>({
-      query: () => endpoints.category.getListCategory,
-    }),
-    getCategoriesWithProducts: builder.query<Category[], void>({
-      query: () => endpoints.category.getListCategoryWithProduct,
-    }),
-    getCategoriesWithProductsAndFilter: builder.query<Category[], void>({
-      query: () => endpoints.category.getListCateWithProduct_CateFilter,
-    }),
-
-    // Product endpoints
-    getPagedProducts: builder.query<Product[], void>({
-      query: () => endpoints.product.getPagedListProduct,
-    }),
-    getProduct: builder.query<Product, string>({
-      query: (id) => `${endpoints.product.getProductById}/${id}`,
-    }),
-
-    // Product Measurement endpoints
-    getProductMeasurements: builder.query<ProductMeasurement[], void>({
-      query: () => endpoints.productMeasure.getListProdtMeasure,
-    }),
-    getProductMeasurement: builder.query<ProductMeasurement, string>({
-      query: (id) => `${endpoints.productMeasure.getListProdMeasureById}/${id}`,
-    }),
-    getProductList: builder.query({
-      query: () => endpoints.category.getListProduct,
-    }),
-  }),
-});
-
-// Export hooks for usage in components
-export const {
-  useGetCategoriesQuery,
-  useGetCategoriesWithProductsQuery,
-  useGetCategoriesWithProductsAndFilterQuery,
-  useGetPagedProductsQuery,
-  useGetProductQuery,
-  useGetProductMeasurementsQuery,
-  useGetProductMeasurementQuery,
-  useGetProductListQuery,
-} = api;
+// This file can be removed as all endpoints have been moved to their respective files
+// Or kept as an index file to re-export all APIs
+export * from './api/category';
+export * from './api/product';
+export * from './api/measurement';
+export * from './api/auth';
