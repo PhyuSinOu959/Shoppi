@@ -39,24 +39,24 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: '/api/v1/auth/login',
+        url: endpoints.auth.login,
         method: 'POST',
         body: credentials,
       }),
     }),
     register: builder.mutation<AuthResponse, RegisterRequest>({
       query: (userData) => ({
-        url: '/api/v1/auth/register',
+        url: endpoints.auth.register,
         method: 'POST',
         body: userData,
       }),
     }),
     verifyToken: builder.query<User, void>({
-      query: () => '/api/v1/auth/verify',
+      query: () => endpoints.auth.verifyToken,
     }),
     logout: builder.mutation<AuthResponse, void>({
       query: () => ({
-        url: '/api/v1/auth/logout',
+        url: endpoints.auth.logout,
         method: 'POST',
       }),
     }),

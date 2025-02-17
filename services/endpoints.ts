@@ -12,5 +12,11 @@ export const endpoints = {
     productMeasure: {
         getListProdtMeasure: `${process.env.REACT_APP_API_BASE_URL}/ProductMeasurement/GetListProductMeasurement`,
         getListProdMeasureById: `${process.env.REACT_APP_API_BASE_URL}/ProductMeasurement/GetListProductMeasurement`,
+    },
+    auth:{
+        login: `${process.env.REACT_APP_API_BASE_URL}/Auth/Login`,
+        register: `${process.env.REACT_APP_API_BASE_URL}/Auth/Register`,
+        verifyToken: `${process.env.REACT_APP_API_BASE_URL}/Auth/VerifyToken`,
+        logout: `${process.env.REACT_APP_API_BASE_URL}/Auth/Logout`,
     }
 }
