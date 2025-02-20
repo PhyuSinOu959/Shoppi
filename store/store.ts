@@ -4,7 +4,10 @@ import cartReducer from './Reducer/cartSlice';
 import productReducer from './Reducer/productSlice';
 import authReducer from './Reducer/authSlice';
 import { rootSaga } from './saga';
-import { api } from '../services/api';
+import { categoryApi } from '../services/api/category';
+import { productApi } from '../services/api/product';
+import { measurementApi } from '../services/api/measurement';
+import { authApi } from '../services/api/auth';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -13,12 +16,18 @@ export const store = configureStore({
     cart: cartReducer,
     products: productReducer,
     auth: authReducer,
-    [api.reducerPath]: api.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
+    [productApi.reducerPath]: productApi.reducer,
+    [measurementApi.reducerPath]: measurementApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(sagaMiddleware)
-      .concat(api.middleware),
+      .concat(categoryApi.middleware)
+      .concat(productApi.middleware)
+      .concat(measurementApi.middleware)
+      .concat(authApi.middleware),
 });
 
 sagaMiddleware.run(rootSaga);
