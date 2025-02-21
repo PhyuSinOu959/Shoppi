@@ -15,6 +15,7 @@ export const CategoryList = () => {
     const subAnimationHeight = useRef(new Animated.Value(0)).current;
 
     const handleCategoryPress = (categoryId: string) => {
+        console.warn('ouu', 'categoryId', categoryId)
         if (expandedCategory === categoryId) {
             // Collapse if already expanded
             setExpandedCategory(null);

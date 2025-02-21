@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '../../../src/components/SearchBar';
 import { useGetCategoriesQuery, useGetPagedProductsQuery } from '../../../services/api';
 import { Category } from '../../../services/types/category';
 import { Product } from '../../../services/types/product';

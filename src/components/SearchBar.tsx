@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { IconSymbol } from '../IconSymbol';
+import { IconSymbol } from '../../components/ui/IconSymbol';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 export function SearchBar() {

@@ -10,12 +10,12 @@ import {
   FlatList,
   SectionList,
 } from 'react-native'
-import { SearchBar } from './SearchBar'
+import { SearchBar } from '../../../src/components/SearchBar'
 import { useDispatch } from 'react-redux'
 import { router } from 'expo-router'
-import { CategoryBar } from './CategoryBar'
-import { SortBar, SortOption } from './SortBar'
-import { FunctionBar } from './FunctionBar'
+import { CategoryBar } from '../../../src/components/CategoryBar'
+import { SortBar, SortOption } from '../../../src/components/SortBar'
+import { FunctionBar } from '../../../src/components/FunctionBar'
 import { CategoryList } from './CategoryList'
 
 type Product = {
@@ -157,11 +157,11 @@ export const HomeScreen = () => {
         </View>
       )}
 
-      {error && (
+      {/* {error && (
         <View style={styles.centered}>
           <Text style={styles.errorText}>Error loading products</Text>
         </View>
-      )}
+      )} */}
 
       {/* <SectionList
         sections={sections}

@@ -34,13 +34,13 @@ const CartItemComponent = ({ item }: { item: CartItem }) => {
   return (
     <ThemedView style={styles.cartItem}>
       <View style={styles.imageContainer}>
-        {product.imageUrl && (
+        {/* {product.imageUrl && (
           <Image 
             source={{ uri: product.imageUrl }} 
             style={styles.productImage}
             defaultSource={require('@/assets/placeholder.png')}
           />
-        )}
+        )} */}
       </View>
       
       <View style={styles.itemDetails}>
