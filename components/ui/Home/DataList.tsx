@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SearchBar } from '../../../src/components/SearchBar';
-import { useGetCategoriesQuery, useGetPagedProductsQuery } from '../../../services/api';
-import { Category } from '../../../services/types/category';
-import { Product } from '../../../services/types/product';
+import { useGetCategoriesQuery, useGetPagedProductsQuery } from '../../../src/services/api';
+import { Category } from '../../../src/services/types/category';
+import { Product } from '../../../src/services/types/product';
 
 export function DataList() {
   const { data: categories, isLoading: categoriesLoading } = useGetCategoriesQuery();

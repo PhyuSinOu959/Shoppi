@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
-import { fetchProducts } from '@/services/api';
+import { fetchProducts } from '@/src/services/api';
 import { 
   fetchProductsStart,
   fetchProductsSuccess,

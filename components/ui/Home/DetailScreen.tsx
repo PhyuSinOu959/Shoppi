@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
-import { useGetProductQuery } from "@/services/api";
+import { useGetProductQuery } from "@/src/services/api";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/Reducer/cartSlice";
 import { useState } from "react";

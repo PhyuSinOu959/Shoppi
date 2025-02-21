@@ -4,7 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, updateQuantity } from '@/store/Reducer/cartSlice';
 import { Ionicons } from '@expo/vector-icons';
-import { useGetProductQuery } from '@/services/api';
+import { useGetProductQuery } from '@/src/services/api';
 import { useMemo } from 'react';
 
 interface CartItem {

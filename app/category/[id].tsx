@@ -3,9 +3,9 @@ import { StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useGetCategoriesWithProductsQuery } from '@/services/api';
-import { Product } from '@/services/types/product';
-import { Category } from '@/services/types/category';
+import { useGetCategoriesWithProductsQuery } from '@/src/services/api';
+import { Product } from '@/src/services/types/product';
+import { Category } from '@/src/services/types/category';
 import { useState } from 'react';
 
 type QuantityType = 'pack' | 'box' | 'unit' | 'dozen';

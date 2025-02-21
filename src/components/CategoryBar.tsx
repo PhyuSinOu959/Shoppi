@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, StyleSheet, View, Image } from 'react-native';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
 
 const categories = [
     {

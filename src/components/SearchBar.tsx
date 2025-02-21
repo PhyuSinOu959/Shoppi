@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { IconSymbol } from '../../components/ui/IconSymbol';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
 
 export function SearchBar() {
   const backgroundColor = useThemeColor({}, 'background');

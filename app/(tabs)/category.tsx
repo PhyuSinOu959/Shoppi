@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useGetCategoriesQuery } from '@/services/api';
-import { Category } from '@/services/types';
+import { useGetCategoriesQuery } from '@/src/services/api';
+import { Category } from '@/src/services/types';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 

@@ -1,4 +1,4 @@
-import { useGetProductListQuery } from '@/services/api'
+import { useGetProductListQuery } from '@/src/services/api'
 import React, { useState, useMemo } from 'react'
 import {
   View,

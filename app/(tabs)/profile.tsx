@@ -2,7 +2,7 @@ import { StyleSheet, ScrollView, TouchableOpacity, Image, View } from 'react-nat
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol, type IconSymbolName } from '@/components/ui/IconSymbol';
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
 
 // Temporary mock data - In a real app, this would come from your auth/user state management
 const mockUserData = {
