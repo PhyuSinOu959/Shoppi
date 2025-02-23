@@ -3,12 +3,14 @@ import React, { useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { PARENT_CATEGORIES, ParentCategory, SubCategory } from './dummyData';
 import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '../../../context/AuthContext';
 
 const { width } = Dimensions.get('window');
 const COLUMN_WIDTH = width / 2 - 24; // 2 columns with padding
 
 export const CategoryList = () => {
     const router = useRouter();
+    const { user } = useAuth();
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [expandedSubCategory, setExpandedSubCategory] = useState<string | null>(null);
     const animationHeight = useRef(new Animated.Value(0)).current;
@@ -62,6 +64,13 @@ export const CategoryList = () => {
         });
     };
 
+    const handleAddProduct = (categoryId: string) => {
+        router.push({
+            pathname: '/admin/product/add',
+            params: { categoryId }
+        });
+    };
+
     const renderProductTypes = (subCategory: SubCategory) => {
         if (expandedSubCategory !== subCategory.id) return null;
 
@@ -86,6 +95,15 @@ export const CategoryList = () => {
                         <Text style={styles.productTypeText}>{product.name}</Text>
                     </TouchableOpacity>
                 ))}
+                {user?.isAdmin && (
+                    <TouchableOpacity
+                        style={styles.addProductButton}
+                        onPress={() => handleAddProduct(subCategory.id)}
+                    >
+                        <Ionicons name="add-circle-outline" size={20} color="#007AFF" />
+                        <Text style={styles.addProductText}>Add Product</Text>
+                    </TouchableOpacity>
+                )}
             </Animated.View>
         );
     };
@@ -278,5 +296,19 @@ const styles = StyleSheet.create({
     productTypeText: {
         fontSize: 14,
         color: '#666',
+    },
+    addProductButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 12,
+        paddingLeft: 24,
+        backgroundColor: '#f0f0f0',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e0e0e0',
+    },
+    addProductText: {
+        fontSize: 14,
+        color: '#007AFF',
+        marginLeft: 8,
     },
 });
