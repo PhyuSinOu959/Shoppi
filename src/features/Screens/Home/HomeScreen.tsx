@@ -10,13 +10,13 @@ import {
   FlatList,
   SectionList,
 } from 'react-native'
-import { SearchBar } from '../../../src/components/SearchBar'
+import { SearchBar } from '../../../components/SearchBar'
 import { useDispatch } from 'react-redux'
 import { router } from 'expo-router'
-import { CategoryBar } from '../../../src/components/CategoryBar'
-import { SortBar, SortOption } from '../../../src/components/SortBar'
-import { FunctionBar } from '../../../src/components/FunctionBar'
-import { CategoryList } from './CategoryList'
+import { CategoryBar } from '../../../components/CategoryBar'
+import { SortBar, SortOption } from '../../../components/SortBar'
+import { FunctionBar } from '../../../components/FunctionBar'
+import { CategoryList } from '../../../../components/ui/Home/CategoryList'
 
 type Product = {
   id: string

@@ -8,9 +8,9 @@ import {
   FlatList,
   Dimensions
 } from 'react-native';
-import { IconSymbol } from './IconSymbol';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
+import { IconSymbol } from '../../components/ui/IconSymbol';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
 
 export interface DropdownOption {
   label: string;

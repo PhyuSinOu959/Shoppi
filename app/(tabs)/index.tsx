@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { HomeScreen } from '@/components/ui/Home/HomeScreen';
+import { HomeScreen } from '@/src/features/Screens/Home/HomeScreen';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
