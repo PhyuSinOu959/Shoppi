@@ -15,6 +15,6 @@ export interface IResponseData<T = unknown> {
     flowEnded?: boolean;
 }
 
-export * from './category';
-export * from './product';
-export * from './productMeasurement'; 
+export * from '@/src/services/types/category';
+export * from '@/src/services/types/product';
+export * from '@/src/services/types/productMeasurement'; 

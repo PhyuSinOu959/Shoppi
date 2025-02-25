@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { PARENT_CATEGORIES, ParentCategory, SubCategory } from './dummyData';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 const { width } = Dimensions.get('window');
 const COLUMN_WIDTH = width / 2 - 24; // 2 columns with padding

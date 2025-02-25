@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import cartReducer from './Reducer/cartSlice';
-import productReducer from './Reducer/productSlice';
-import authReducer from './Reducer/authSlice';
-import { rootSaga } from './saga';
-import { categoryApi } from '../services/api/category';
-import { productApi } from '../services/api/product';
-import { measurementApi } from '../services/api/measurement';
-import { authApi } from '../services/api/auth';
+import cartReducer from '@/src/store/Reducer/cartSlice';
+import productReducer from '@/src/store/Reducer/productSlice';
+import authReducer from '@/src/store/Reducer/authSlice';
+import { rootSaga } from '@/src/store/saga';
+import { categoryApi } from '@/src/services/api/category';
+import { productApi } from '@/src/services/api/product';
+import { measurementApi } from '@/src/services/api/measurement';
+import { authApi } from '@/src/services/api/auth';
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -78,19 +78,19 @@ export const PARENT_CATEGORIES: ParentCategory[] = [
     {
         id: '2',
         name: 'Fruits & Vegetables',
-        imageUrl: require('../../../assets/images/categories/vegetables.png'),
+        imageUrl: require('@/assets/images/categories/vegetables.png'),
         subCategories: [
             {
                 id: '201',
                 name: 'Fresh Vegetables',
-                imageUrl: require('../../../assets/images/categories/grocery.png'),
+                imageUrl: require('@/assets/images/categories/grocery.png'),
                 products: [
                     {
                         id: 'p2011',
                         name: 'Fresh Tomatoes',
                         description: 'Farm fresh red tomatoes',
                         price: 2.99,
-                        imageUrl: require('../../../assets/images/products/vegetables.png'),
+                        imageUrl: require('@/assets/images/products/vegetables.png'),
                         unit: '500g',
                         stock: 100,
                         rating: 4.0
